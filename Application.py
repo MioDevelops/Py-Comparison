@@ -38,7 +38,7 @@ class Screen():
         credits.place(x=170, y=270)
 
     def settings(self):
-        self.root.update()
+        self.minifest()
 
 		#credits = Label(self.root, text="Created by: Conner Lovely", font=("Helvetica", 10, "bold"), cursor="hand2", bg=self.mainbgtext)
         #credits.place(x=, y=475)
@@ -46,16 +46,16 @@ class Screen():
         pass
 
     def results(self):
-        self.root.update()
+        self.minifest()
         pass
 
     def working(self):
-        self.root.update()
-        self.unpack_all()
+        self.minifest()
         pass
 
     def minifest(self):
         #update and remoev widgets
+        self.root.update()
         pass
 
 screen = Screen()
