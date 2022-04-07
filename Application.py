@@ -35,7 +35,7 @@ class Screen():
         settings = Button(self.root, text="Settings", command=lambda : self.settings(), bg=self.mainbgbutton, font=("Helvetica", 11, ("bold", "italic")), width=15)
         settings.place(x=170, y=210)
 
-        credits = Button(self.root, text="Credits", command=lambda : self.results(), bg=self.mainbgbutton, font=("Helvetica", 11, ("bold", "italic")), width=15)
+        credits = Button(self.root, text="Credits", command=lambda : self.credits(), bg=self.mainbgbutton, font=("Helvetica", 11, ("bold", "italic")), width=15)
         credits.place(x=170, y=270)
 
         credits = Label(self.root, text="Created by: Conner Lovely", font=("Helvetica", 10, "bold"), cursor="hand2", bg=self.mainbgtext)
@@ -44,10 +44,6 @@ class Screen():
 
     def settings(self):
         self.minifest()
-
-		#credits = Label(self.root, text="Created by: Conner Lovely", font=("Helvetica", 10, "bold"), cursor="hand2", bg=self.mainbgtext)
-        #credits.place(x=, y=475)
-        #credits.bind("<Button-1>", lambda e: self.callback("https://github.com/MioDevelops"))
         pass
 
     def results(self):
@@ -59,7 +55,6 @@ class Screen():
         pass
 
     def minifest(self):
-        #update and remove widgets
         self.root.update()
 
         x = self.root.place_slaves()
@@ -67,7 +62,12 @@ class Screen():
             i.place_forget()
 
         self.title.place(x=self.title_place[0], y=self.title_place[1])
-        pass
+
+    def credits(self):
+        self.minifest()
+        
+        lable = Label(self.root, text="Made by Conner Lovely", font=("Helvetica", 15, ("bold", "italic")), bg=self.mainbgtext)
+        lable.place(x=125, y=80)
 
 screen = Screen()
 
