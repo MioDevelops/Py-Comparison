@@ -43,6 +43,7 @@ class Screen():
         credits.bind("<Button-1>", lambda e: self.callback("https://github.com/MioDevelops"))
 
     def settings(self):
+        self.page = "settings"
         self.minifest()
         pass
 
