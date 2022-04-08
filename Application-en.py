@@ -68,9 +68,6 @@ class Screen():
         credits = Button(self.root, text="Credits", command=lambda : self.credits(), bg=self.mainbgbutton, font=("Helvetica", 11, ("bold", "italic")), width=15)
         credits.place(x=170, y=270)
 
-        credits = Label(self.root, text="Created by: Conner Lovely", font=("Helvetica", 10, "bold"), cursor="hand2", bg=self.mainbgtext)
-        credits.place(x=325, y=475)
-
     def settings(self):
         self.manifest()
         self.back_button.place(x=5, y=5)
@@ -121,19 +118,19 @@ class Screen():
         
         Label(self.root, text="Made by Conner Lovely", font=("Helvetica", 15, ("bold", "italic")), bg=self.mainbgtext).place(x=125, y=80)
         Label(self.root, text="Link to Github", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=190, y=130)
-        label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue")
+        label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue", cursor="hand2")
         label.place(x=225, y=160)
         label.bind("<Button-1>", lambda e: self.callback("https://github.com/MioDevelops"))
         Label(self.root, text="Link to Replit", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=190, y=190)
-        label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue")
+        label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue", cursor="hand2")
         label.place(x=225, y=220)
         label.bind("<Button-1>", lambda e: self.callback("https://replit.com/@MioYanaka"))
         Label(self.root, text="Link to Twitter", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=190, y=260)
-        label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue")
+        label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue", cursor="hand2")
         label.place(x=225, y=290)
         label.bind("<Button-1>", lambda e:self.callback(""))
         Label(self.root, text="Have a question? Email me!", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=135, y=350)
-        label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue")
+        label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue", cursor="hand2")
         label.place(x=225, y=380)
         label.bind("<Button-1>", lambda e: self.callback("mailto:MioDevelops@gmail.com"))
 
