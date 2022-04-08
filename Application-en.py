@@ -15,7 +15,12 @@ class Screen():
         self.title.place(x=110, y=5)
         self.back_button = Button(self.root, text="Back", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.main())
         self.back_button.place(x=5,y=5)
+        self.extensions=".py"
         self.root.update()
+
+    def change_extension(self, ext):
+        self.extensions = ext
+        messagebox.showinfo("Notification", 'You have successfully changed the file extensions to "{}", you may now close this window'.format(ext))
 
     def callback(self, url):
         answer = messagebox.askyesno("Redirect", "This link will open a new browser window, do you wish to continue?")
@@ -49,7 +54,17 @@ class Screen():
 
         label = Label(self.root, text="Settings", font=("Helvetica", 20, "bold"), bg=self.mainbgtext)
         label.place(x=185, y=80)
-        pass
+
+        #still need to figure out how to open and run a different file
+        button = Button(self.root, text="Change language to spanish/cambiar el idioma a español", font=("Helvetica", 9, ("bold", "italic")), bg=self.mainbgbutton, command=None)
+        button.place(x=30, y=140)
+        
+        if(self.extensions == ".Py"):
+            button = Button(self.root, text="Use all file extensions", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command= lambda : self.change_extension("All"))
+            button.place(x=150, y=200)
+        elif(self.extensions == "All"):
+            button = Button(self.root, text="Use only .py file extensions", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command= lambda : self.change_extension(".py"))
+            button.place(x=135, y=200)
 
     def results(self):
         self.manifest()
