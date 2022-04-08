@@ -52,14 +52,14 @@ class Screen():
             file = [filename, filename.split("/")[filename.count("/")]]
             self.files.append(file)
             if(evt == "initial"):
-                self.working(evt="{}".format(filename.split("/")[filename.count("/")]))
+                self.working(evt="{}".format(filename.split("/")[filename.count("/")]), evt2=None)
             else:
-                self.working(evt2="{}".format(filename.split("/")[filename.count("/")]))
+                self.working(evt=self.files[0][0], evt2=filename.split("/")[filename.count("/")])
 
     def main(self):
         self.manifest()
 
-        start = Button(self.root, text="Start Compairing", command=lambda : self.working(evt=None), bg=self.mainbgbutton, font=("Helvetica", 11, ("bold", "italic")), width=15)
+        start = Button(self.root, text="Start Compairing", command=lambda : self.working(evt=None, evt2=None), bg=self.mainbgbutton, font=("Helvetica", 11, ("bold", "italic")), width=15)
         start.place(x=170, y=150)
       
         settings = Button(self.root, text="Settings", command=lambda : self.settings(), bg=self.mainbgbutton, font=("Helvetica", 11, ("bold", "italic")), width=15)
@@ -91,22 +91,20 @@ class Screen():
         self.back_button.place(x=5, y=5)
         pass
 
-    def working(self, evt=None, evt2=None):
+    def working(self, evt, evt2):
+        evt = None
+        evt2 = None
         self.manifest()
         self.back_button.place(x=5, y=5)
 
         Label(self.root, text="Select the file you want to compare to", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgtext).place(x=130, y=90)
         Button(self.root, text="Select file", font=("helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.open_file("initial")).place(x=200, y=120)
-        if evt != None:
-            Label(self.root, text="File Selected: {}".format(evt), font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=135, y=150)
-
-            Label(self.root, text="Select file for comparison", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgtext).place(x=160, y=220)
-            Button(self.root, text="Select file", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.open_file("compare")).place(x=200, y=250)
-        if evt2 != None:
-            Label(self.root, text="File Selected: {}".format(evt2), font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=135, y=270)
-
+        Label(self.root, text="File Selected: {}".format(evt), font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=135, y=150)
+        Label(self.root, text="Select file for comparison", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgtext).place(x=160, y=220)
+        Button(self.root, text="Select file", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.open_file("compare")).place(x=200, y=250)
+        Label(self.root, text="File Selected: {}".format(evt2), font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=135, y=280)
+        if evt != None and evt2 != None:
             Button(self.root, text="Start File Comparing", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.results()).place(x=200, y=300)
-        pass
 
     def manifest(self):
         self.root.update()
