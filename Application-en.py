@@ -50,7 +50,7 @@ class Screen():
 
     def settings(self):
         self.manifest()
-        self.back_button.place(x=self.back_button.winfo_rootx() - 1, y=self.back_button.winfo_rooty() - 25)
+        self.back_button.place(x=5, y=5)
 
         label = Label(self.root, text="Settings", font=("Helvetica", 20, "bold"), bg=self.mainbgtext)
         label.place(x=185, y=80)
@@ -68,12 +68,12 @@ class Screen():
 
     def results(self):
         self.manifest()
-        self.back_button.place(x=self.back_button.winfo_rootx() - 1, y=self.back_button.winfo_rooty() - 25)
+        self.back_button.place(x=5, y=5)
         pass
 
     def working(self):
         self.manifest()
-        self.back_button.place(x=self.back_button.winfo_rootx() - 1, y=self.back_button.winfo_rooty() - 25)
+        self.back_button.place(x=5, y=5)
         pass
 
     def manifest(self):
@@ -83,11 +83,11 @@ class Screen():
         for i in x:
             i.place_forget()
 
-        self.title.place(x=self.title.winfo_rootx() - 1, y=self.title.winfo_rooty() - 25)
+        self.title.place(x=110, y=5)
 
     def credits(self):
         self.manifest()
-        self.back_button.place(x=self.back_button.winfo_rootx() - 1, y=self.back_button.winfo_rooty() - 25)
+        self.back_button.place(x=5, y=5)
         
         lable = Label(self.root, text="Made by Conner Lovely", font=("Helvetica", 15, ("bold", "italic")), bg=self.mainbgtext)
         lable.place(x=125, y=80)
