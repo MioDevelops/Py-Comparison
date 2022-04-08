@@ -59,10 +59,10 @@ class Screen():
         button = Button(self.root, text="Change language to spanish/cambiar el idioma a español", font=("Helvetica", 9, ("bold", "italic")), bg=self.mainbgbutton, command=None)
         button.place(x=30, y=140)
         
-        if(self.extensions == ".Py"):
+        if(self.extensions == ".py"):
             button = Button(self.root, text="Use all file extensions", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command= lambda : self.change_extension("All"))
             button.place(x=150, y=200)
-        elif(self.extensions == "All"):
+        else:
             button = Button(self.root, text="Use only .py file extensions", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command= lambda : self.change_extension(".py"))
             button.place(x=135, y=200)
 
