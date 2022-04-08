@@ -22,6 +22,13 @@ class Screen():
         self.extensions = ext
         messagebox.showinfo("Notification", 'You have successfully changed the file extensions to "{}", you may now close this window'.format(ext))
 
+    def change_language(self):
+        ans = messagebox.askyesno("Notification", "Changing language to spanish, are you sure? cambiando idioma a español, estas seguro?")
+        if(ans):
+            pass
+            #do the thing of changing languages
+        pass
+
     def callback(self, url):
         answer = messagebox.askyesno("Redirect", "This link will open a new browser window, do you wish to continue?")
         if answer:
@@ -29,9 +36,14 @@ class Screen():
         else:
             answer.conjugate()
 
-    def open_file(self):
+    def open_file(self, evt):
         self.root.update()
-        pass
+
+        filename = filedialog.askopenfilename()
+        if ".py" not in filename and self.extensions == ".py":
+            messagebox.showinfo("Error", "As of your settings, you may only use .py files")
+        else:
+            pass
 
     def main(self):
         self.manifest()
@@ -56,15 +68,12 @@ class Screen():
         label.place(x=185, y=80)
 
         #still need to figure out how to open and run a different file
-        button = Button(self.root, text="Change language to spanish/cambiar el idioma a español", font=("Helvetica", 9, ("bold", "italic")), bg=self.mainbgbutton, command=None)
-        button.place(x=30, y=140)
+        Button(self.root, text="Change language to spanish/cambiar el idioma a español", font=("Helvetica", 9, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.change_language()).place(x=70, y=140)
         
         if(self.extensions == ".py"):
-            button = Button(self.root, text="Use all file extensions", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command= lambda : self.change_extension("All"))
-            button.place(x=150, y=200)
+            Button(self.root, text="Use all file extensions", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command= lambda : self.change_extension("All")).place(x=170, y=200)
         else:
-            button = Button(self.root, text="Use only .py file extensions", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command= lambda : self.change_extension(".py"))
-            button.place(x=135, y=200)
+            Button(self.root, text="Use only .py file extensions", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command= lambda : self.change_extension(".py")).place(x=155, y=200)
 
     def results(self):
         self.manifest()
@@ -74,7 +83,9 @@ class Screen():
     def working(self):
         self.manifest()
         self.back_button.place(x=5, y=5)
-        pass
+
+        Label(self.root, text="Select the file you want to compare to", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgtext).place(x=130, y=90)
+        Button(self.root, text="Select file", font=("helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.open_file("initial")).place(x=200, y=120)
 
     def manifest(self):
         self.root.update()
@@ -89,36 +100,23 @@ class Screen():
         self.manifest()
         self.back_button.place(x=5, y=5)
         
-        lable = Label(self.root, text="Made by Conner Lovely", font=("Helvetica", 15, ("bold", "italic")), bg=self.mainbgtext)
-        lable.place(x=125, y=80)
-
-        label = Label(self.root, text="Link to Github", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext)
-        label.place(x=190, y=130)
-
+        Label(self.root, text="Made by Conner Lovely", font=("Helvetica", 15, ("bold", "italic")), bg=self.mainbgtext).place(x=125, y=80)
+        Label(self.root, text="Link to Github", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=190, y=130)
         label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue")
-        label.place(x=235, y=160)
+        label.place(x=225, y=160)
         label.bind("<Button-1>", lambda e: self.callback("https://github.com/MioDevelops"))
-
-        label = Label(self.root, text="Link to Replit", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext)
-        label.place(x=190, y=190)
-
+        Label(self.root, text="Link to Replit", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=190, y=190)
         label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue")
-        label.place(x=235, y=220)
+        label.place(x=225, y=220)
         label.bind("<Button-1>", lambda e: self.callback("https://replit.com/@MioYanaka"))
-
-        label = Label(self.root, text="Link to Twitter", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext)
-        label.place(x=190, y=260)
-
+        Label(self.root, text="Link to Twitter", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=190, y=260)
         label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue")
-        label.place(x=235, y=290)
+        label.place(x=225, y=290)
         label.bind("<Button-1>", lambda e:self.callback(""))
-
-        label = Label(self.root, text="Have a question? Email me!", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext)
-        label.place(x=135, y=350)
-
+        Label(self.root, text="Have a question? Email me!", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=135, y=350)
         label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue")
-        label.place(x=235, y=380)
-        label.bind("<Button-1>", lambda e: self.callback("https://mail.google.com/mail/?view=cm&fs=1%to=MioDevelops@gmail.com"))
+        label.place(x=225, y=380)
+        label.bind("<Button-1>", lambda e: self.callback("mailto:MioDevelops@gmail.com"))
 
 screen = Screen()
 
