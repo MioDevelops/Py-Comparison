@@ -12,8 +12,10 @@ class Screen():
         self.mainbgtext = "#1ecbe1"
         self.mainbgbutton = "#1695a5"
         self.title = Label(self.root, text="Python File Comparer", font=("Helvetica", 20), bg=self.mainbgtext)
-        self.title_place = (110, 10)
-        self.title.place(x=110, y=10)
+        self.title.place(x=110, y=5)
+        self.back_button = Button(self.root, text="Back", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.main())
+        self.back_button.place(x=5,y=5)
+        self.root.update()
 
     def callback(self, url):
         answer = messagebox.askyesno("Redirect", "This link will open a new browser window, do you wish to continue?")
@@ -27,7 +29,7 @@ class Screen():
         pass
 
     def main(self):
-        self.root.update()
+        self.manifest()
 
         start = Button(self.root, text="Start Compairing", command=lambda : self.working(), bg=self.mainbgbutton, font=("Helvetica", 11, ("bold", "italic")), width=15)
         start.place(x=170, y=150)
@@ -40,35 +42,63 @@ class Screen():
 
         credits = Label(self.root, text="Created by: Conner Lovely", font=("Helvetica", 10, "bold"), cursor="hand2", bg=self.mainbgtext)
         credits.place(x=325, y=475)
-        credits.bind("<Button-1>", lambda e: self.callback("https://github.com/MioDevelops"))
 
     def settings(self):
-        self.page = "settings"
-        self.minifest()
+        self.manifest()
+        self.back_button.place(x=self.back_button.winfo_rootx() - 1, y=self.back_button.winfo_rooty() - 25)
         pass
 
     def results(self):
-        self.minifest()
+        self.manifest()
+        self.back_button.place(x=self.back_button.winfo_rootx() - 1, y=self.back_button.winfo_rooty() - 25)
         pass
 
     def working(self):
-        self.minifest()
+        self.manifest()
+        self.back_button.place(x=self.back_button.winfo_rootx() - 1, y=self.back_button.winfo_rooty() - 25)
         pass
 
-    def minifest(self):
+    def manifest(self):
         self.root.update()
 
         x = self.root.place_slaves()
         for i in x:
             i.place_forget()
 
-        self.title.place(x=self.title_place[0], y=self.title_place[1])
+        self.title.place(x=self.title.winfo_rootx() - 1, y=self.title.winfo_rooty() - 25)
 
     def credits(self):
-        self.minifest()
+        self.manifest()
+        self.back_button.place(x=self.back_button.winfo_rootx() - 1, y=self.back_button.winfo_rooty() - 25)
         
         lable = Label(self.root, text="Made by Conner Lovely", font=("Helvetica", 15, ("bold", "italic")), bg=self.mainbgtext)
         lable.place(x=125, y=80)
+
+        label = Label(self.root, text="Link to Github", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext)
+        label.place(x=190, y=130)
+
+        label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue")
+        label.place(x=235, y=160)
+        label.bind("<Button-1>", lambda e: self.callback("https://github.com/MioDevelops"))
+
+        label = Label(self.root, text="Link to Replit", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext)
+        label.place(x=190, y=190)
+
+        label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue")
+        label.place(x=235, y=220)
+        label.bind("<Button-1>", lambda e: self.callback("https://replit.com/@MioYanaka"))
+
+        label = Label(self.root, text="Link to Twitter", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext)
+        label.place(x=190, y=260)
+
+        label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue")
+        label.place(x=235, y=290)
+
+        label = Label(self.root, text="Have a question? Email me!", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext)
+        label.place(x=135, y=350)
+
+        label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue")
+        label.place(x=235, y=380)
 
 screen = Screen()
 
