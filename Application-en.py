@@ -46,6 +46,9 @@ class Screen():
     def settings(self):
         self.manifest()
         self.back_button.place(x=self.back_button.winfo_rootx() - 1, y=self.back_button.winfo_rooty() - 25)
+
+        label = Label(self.root, text="Settings", font=("Helvetica", 20, "bold"), bg=self.mainbgtext)
+        label.place(x=185, y=80)
         pass
 
     def results(self):
@@ -93,12 +96,14 @@ class Screen():
 
         label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue")
         label.place(x=235, y=290)
+        label.bind("<Button-1>", lambda e:self.callback(""))
 
         label = Label(self.root, text="Have a question? Email me!", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext)
         label.place(x=135, y=350)
 
         label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue")
         label.place(x=235, y=380)
+        label.bind("<Button-1>", lambda e: self.callback("https://mail.google.com/mail/?view=cm&fs=1%to=MioDevelops@gmail.com"))
 
 screen = Screen()
 
