@@ -157,7 +157,7 @@ class Screen():
         Label(self.root, text="Link to Twitter", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=190, y=260)
         label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue", cursor="hand2")
         label.place(x=225, y=290)
-        label.bind("<Button-1>", lambda e:self.callback(""))
+        label.bind("<Button-1>", lambda e: self.callback("https://twitter.com/MioDevelops"))
         Label(self.root, text="Have a question? Email me!", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=135, y=350)
         label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue", cursor="hand2")
         label.place(x=225, y=380)
