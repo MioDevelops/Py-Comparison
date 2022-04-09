@@ -1,7 +1,10 @@
+from email import message
 from tkinter import *
 from tkinter import filedialog, messagebox
 import webbrowser
 
+files = []
+files_dir = []
 class Screen():
     def __init__(self):
         self.root = Tk()
@@ -16,8 +19,14 @@ class Screen():
         self.back_button = Button(self.root, text="Back", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.main())
         self.back_button.place(x=5,y=5)
         self.extensions=".py"
-        self.files = []
         self.root.update()
+
+    def search_lines(self, files_dir):
+        if(files_dir[0] == files_dir[1]):
+            messagebox.showerror("Error", "You cannot select two of the same files, please press refresh and change them")
+            return
+        else:
+            self.results()
 
     def change_extension(self, ext):
         self.extensions = ext
@@ -37,11 +46,18 @@ class Screen():
         else:
             answer.conjugate()
 
-    def open_file(self, evt):
+    def open_file(self, event, args):
         self.root.update()
 
+        if("None" not in args[0] and event == "initial" or "None" not in args[1] and event == "compare"):
+            messagebox.showinfo("Notification", "You may not select another file, please refresh files if you wish to change it")
+            return
+        elif(event == "compare" and "None" in args[0]):
+            messagebox.showerror("Error", "You must select the file to compare to first")
+            return
+        else:
+            pass
         filename = filedialog.askopenfilename()
-        print(filename)
         if ".py" not in filename and self.extensions == ".py" and filename != "":
             messagebox.showinfo("Error", "As of your settings, you may only use .py files")
         elif filename == "":
@@ -49,12 +65,14 @@ class Screen():
         else:
             self.root.destroy()
             self.__init__()
-            file = [filename, filename.split("/")[filename.count("/")]]
-            self.files.append(file)
-            if(evt == "initial"):
+            if(event == "initial"):
                 self.working(evt="{}".format(filename.split("/")[filename.count("/")]), evt2=None)
+                files.append(filename.split("/")[filename.count("/")])
+                files_dir.append(filename)
             else:
-                self.working(evt=self.files[0][0], evt2=filename.split("/")[filename.count("/")])
+                files.append(filename.split("/")[filename.count("/")])
+                files_dir.append(filename)
+                self.working(evt=files[0], evt2=files[1])
 
     def main(self):
         self.manifest()
@@ -67,6 +85,11 @@ class Screen():
 
         credits = Button(self.root, text="Credits", command=lambda : self.credits(), bg=self.mainbgbutton, font=("Helvetica", 11, ("bold", "italic")), width=15)
         credits.place(x=170, y=270)
+
+    def refresh(self):
+        files.clear()
+        self.working(evt=None, evt2=None)
+        files_dir.clear()
 
     def settings(self):
         self.manifest()
@@ -84,33 +107,39 @@ class Screen():
             Button(self.root, text="Use only .py file extensions", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command= lambda : self.change_extension(".py")).place(x=155, y=200)
 
     def results(self):
-        self.manifest()
-        self.back_button.place(x=5, y=5)
+        self.manifest(title=True)
+        Button(self.root, text="Main Page", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.main()).place(x=10, y=5)
+        Label(self.root, text="Please wait as your results are being generated...", font=("Helvetica", 13, ("bold", "italic")), bg=self.mainbgtext).place(x=100, y=6)
         pass
 
     def working(self, evt, evt2):
-        evt = None
-        evt2 = None
         self.manifest()
         self.back_button.place(x=5, y=5)
 
+        file1 = Label(self.root, text="File Selected: {}".format(evt), font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext)
+        file1.place(x=135, y=150)
+        file2 = Label(self.root, text="File Selected: {} ".format(evt2), font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext)
+        file2.place(x=135, y=280)
+        Button(self.root, text="Refresh Files", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.refresh()).place(x=400, y=5)
         Label(self.root, text="Select the file you want to compare to", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgtext).place(x=130, y=90)
-        Button(self.root, text="Select file", font=("helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.open_file("initial")).place(x=200, y=120)
-        Label(self.root, text="File Selected: {}".format(evt), font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=135, y=150)
+        Button(self.root, text="Select file", font=("helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.open_file("initial", [file1["text"], file2["text"]])).place(x=200, y=120)
         Label(self.root, text="Select file for comparison", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgtext).place(x=160, y=220)
-        Button(self.root, text="Select file", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.open_file("compare")).place(x=200, y=250)
-        Label(self.root, text="File Selected: {}".format(evt2), font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=135, y=280)
-        if evt != None and evt2 != None:
-            Button(self.root, text="Start File Comparing", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.results()).place(x=200, y=300)
+        Button(self.root, text="Select file", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.open_file("compare", [file1["text"], file2["text"]])).place(x=200, y=250)
+        if (evt != None and evt2 != None):
+            Button(self.root, text="Start File Comparing", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.search_lines(files_dir)).place(x=170, y=340)
 
-    def manifest(self):
+    def manifest(self, title=False):
         self.root.update()
 
         x = self.root.place_slaves()
         for i in x:
             i.place_forget()
 
-        self.title.place(x=110, y=5)
+        if not title:
+            self.title.place(x=110, y=5)
+        else:
+            pass
+
 
     def credits(self):
         self.manifest()
