@@ -1,4 +1,3 @@
-from email import message
 from tkinter import *
 from tkinter import filedialog, messagebox
 import webbrowser
@@ -33,7 +32,7 @@ class Screen():
         messagebox.showinfo("Notification", 'You have successfully changed the file extensions to "{}", you may now close this window'.format(ext))
 
     def change_language(self):
-        ans = messagebox.askyesno("Notification", "Changing language to spanish, are you sure? cambiando idioma a español, estas seguro?")
+        ans = messagebox.askyesno("Notification", "Changing language to spanish, are you sure? Cambiando idioma a español, estas seguro?")
         if(ans):
             pass
             #do the thing of changing languages
@@ -98,8 +97,7 @@ class Screen():
         label = Label(self.root, text="Settings", font=("Helvetica", 20, "bold"), bg=self.mainbgtext)
         label.place(x=185, y=80)
 
-        #still need to figure out how to open and run a different file
-        Button(self.root, text="Change language to spanish/cambiar el idioma a español", font=("Helvetica", 9, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.change_language()).place(x=70, y=140)
+        Button(self.root, text="Change language to spanish/Cambiar el idioma a español", font=("Helvetica", 9, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.change_language()).place(x=70, y=140)
         
         if(self.extensions == ".py"):
             Button(self.root, text="Use all file extensions", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command= lambda : self.change_extension("All")).place(x=170, y=200)
@@ -110,7 +108,40 @@ class Screen():
         self.manifest(title=True)
         Button(self.root, text="Main Page", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.main()).place(x=10, y=5)
         Label(self.root, text="Please wait as your results are being generated...", font=("Helvetica", 13, ("bold", "italic")), bg=self.mainbgtext).place(x=100, y=6)
-        pass
+        
+        try:
+            results1 = []
+            results2 = []
+            
+            with open(files_dir[0], "r") as file1:
+                results1 = file1.readlines()
+                #results1.append(file1_results)
+
+            with open(files_dir[1], "r") as file2:
+                results2 = file2.readlines()
+                #results2.append(file2_results)
+
+            differences = []
+            for i,v in enumerate(results1):
+                results1[i] = v.strip()
+            
+            for i,v in enumerate(results2):
+                results2[i] = v.strip()
+
+            for line_index, v in enumerate(results1):
+                # check if index is in results1
+                if (line_index in range(len(results2))):
+                    if(results1[line_index] != results2[line_index]):
+                        differences.append("%s : %s" % (line_index, v))
+                else:
+                    differences.append("%s : %s" % (line_index, v))
+
+            print(differences)
+
+        except PermissionError as e:
+            messagebox.showerror("Error", "This program does not have the required permissions to open files, please run as administrator and try again")
+            return
+        
 
     def working(self, evt, evt2):
         self.manifest()
