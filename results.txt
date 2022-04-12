@@ -1,0 +1,182 @@
+2 : from tkinter import filedialog, messagebox
+3 : import webbrowser
+4 : import subprocess
+5 : import os
+7 : files = []
+8 : files_dir = []
+9 : class Screen():
+10 : def __init__(self):
+11 : self.root = Tk()
+12 : self.root.title("Python File Comparer")
+13 : self.root.geometry("500x500")
+14 : self.root.resizable(False, False)
+15 : self.root.configure(background="#1ecbe1")
+16 : self.mainbgtext = "#1ecbe1"
+17 : self.mainbgbutton = "#1695a5"
+18 : self.title = Label(self.root, text="Python File Comp...
+19 : self.title.place(x=110, y=5)
+20 : self.back_button = Button(self.root, text="Back", fo...
+21 : self.back_button.place(x=5,y=5)
+22 : self.extensions=".py"
+23 : self.last_label = 35
+24 : self.root.update()
+26 : def search_lines(self, files_dir):
+27 : if(files_dir[0] == files_dir[1]):
+28 : messagebox.showerror("Error", "You cannot select two of the same files, please press refresh and change them")
+29 : return
+30 : else:
+31 : self.results()
+33 : def change_extension(self, ext):
+34 : self.extensions = ext
+35 : messagebox.showinfo("Notification", 'You have successfully changed the file extensions to "{}", you may now close this window'.format(ext))
+37 : def callback(self, url):
+38 : answer = messagebox.askyesno("Redirect", "This link will open a new browser window, do you wish to continue?")
+39 : if answer:
+40 : webbrowser.open_new(url)
+41 : else:
+42 : answer.conjugate()
+44 : def open_file(self, event, args):
+45 : self.root.update()
+47 : if(event == "results"):
+48 : f = open("./results.txt", "w")
+49 : for i in range(0, len(args)):
+50 : if(args[i].split(": ")[1] == ""):
+51 : pass
+52 : else:
+53 : f.write(args[i] + "\n")
+54 : f.close()
+55 : subprocess.Popen(["notepad.exe", "results.txt"])
+56 : return
+58 : if("None" not in args[0] and event == "initial" or "None" not in args[1] and event == "compare"):
+59 : messagebox.showinfo("Notification", "You may not select another file, please refresh files if you wish to change it")
+60 : return
+61 : elif(event == "compare" and "None" in args[0]):
+62 : messagebox.showerror("Error", "You must select the file to compare to first")
+63 : return
+64 : else:
+65 : pass
+66 : filename = filedialog.askopenfilename()
+67 : if ".py" not in filename and self.extensions == ".py" and filename != "":
+68 : messagebox.showinfo("Error", "As of your settings, you may only use .py files")
+69 : elif filename == "":
+70 : pass
+71 : else:
+72 : self.root.destroy()
+73 : self.__init__()
+74 : if(event == "initial"):
+75 : self.working(evt="{}".format(filename.split("/")[filename.count("/")]), evt2=None)
+76 : files.append(filename.split("/")[filename.count("/")])
+77 : files_dir.append(filename)
+78 : else:
+79 : files.append(filename.split("/")[filename.count("/")])
+80 : files_dir.append(filename)
+81 : self.working(evt=files[0], evt2=files[1])
+83 : def main(self):
+84 : self.manifest()
+86 : start = Button(self.root, text="Start Compairing", command=lambda : self.working(evt=None, evt2=None), bg=self.mainbgbutton, font=("Helvetica", 11, ("bold", "italic")), width=15)
+87 : start.place(x=170, y=150)
+89 : settings = Button(self.root, text="Settings", command=lambda : self.settings(), bg=self.mainbgbutton, font=("Helvetica", 11, ("bold", "italic")), width=15)
+90 : settings.place(x=170, y=210)
+92 : credits = Button(self.root, text="Credits", command=lambda : self.credits(), bg=self.mainbgbutton, font=("Helvetica", 11, ("bold", "italic")), width=15)
+93 : credits.place(x=170, y=270)
+95 : def refresh(self):
+96 : files.clear()
+97 : self.working(evt=None, evt2=None)
+98 : files_dir.clear()
+100 : def settings(self):
+101 : self.manifest()
+102 : self.back_button.place(x=5, y=5)
+104 : label = Label(self.root, text="Settings", font=("Helvetica", 20, "bold"), bg=self.mainbgtext)
+105 : label.place(x=185, y=80)
+107 : if(self.extensions == ".py"):
+108 : Button(self.root, text="Use all file extensions", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command= lambda : self.change_extension("All")).place(x=170, y=200)
+109 : else:
+110 : Button(self.root, text="Use only .py file extensions", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command= lambda : self.change_extension(".py")).place(x=155, y=200)
+112 : def results(self):
+113 : self.manifest(title=True)
+114 : Button(self.root, text="Main Page", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.main()).place(x=10, y=5)
+115 : Label(self.root, text="Please wait as your results are being generated...", font=("Helvetica", 13, ("bold", "italic")), bg=self.mainbgtext).place(x=100, y=6)
+117 : try:
+118 : results1 = []
+119 : results2 = []
+121 : with open(files_dir[0], "r") as file1:
+122 : results1 = file1.readlines()
+123 : #results1.append(file1_results)
+125 : with open(files_dir[1], "r") as file2:
+126 : results2 = file2.readlines()
+127 : #results2.append(file2_results)
+129 : differences = []
+130 : for i,v in enumerate(results1):
+131 : if(v.strip().replace(" ", "") == ""):
+132 : pass
+133 : results1[i] = v.strip()
+135 : for i,v in enumerate(results2):
+136 : if(v.strip().replace(" ", "") == ""):
+137 : pass
+138 : results2[i] = v.strip()
+140 : for line_index, v in enumerate(results1):
+141 : # check if index is in results1
+142 : if (line_index in range(len(results2))):
+143 : if(results1[line_index] != results2[line_index]):
+144 : differences.append("%s : %s" % (line_index + 1, v))
+145 : else:
+146 : differences.append("%s : %s" % (line_index + 1, v))
+148 : for i in range(0, 19):
+149 : if(differences[i].split(": ")[1] == ""):
+150 : pass
+151 : else:
+152 : print(differences[i].split(": ")[1])
+153 : if(len(differences[i]) > 50):
+154 : differences[i] = differences[i][:-(len(differences[i]) - 60) -3] + "..."
+155 : Label(self.root, text="Line " + differences[i], font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=5, y=self.last_label)
+156 : self.last_label += 20
+157 : Button(self.root, text="View all Results", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.open_file("results", differences)).place(x=170, y=465)
+159 : except PermissionError as e:
+160 : messagebox.showerror("Error", "This program does not have the required permissions to open files, please run as administrator and try again")
+161 : return
+164 : def working(self, evt, evt2):
+165 : self.manifest()
+166 : self.back_button.place(x=5, y=5)
+168 : file1 = Label(self.root, text="File Selected: {}".format(evt), font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext)
+169 : file1.place(x=135, y=150)
+170 : file2 = Label(self.root, text="File Selected: {} ".format(evt2), font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext)
+171 : file2.place(x=135, y=280)
+172 : Button(self.root, text="Refresh Files", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.refresh()).place(x=400, y=5)
+173 : Label(self.root, text="Select the file you want to compare to", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgtext).place(x=130, y=90)
+174 : Button(self.root, text="Select file", font=("helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.open_file("initial", [file1["text"], file2["text"]])).place(x=200, y=120)
+175 : Label(self.root, text="Select file for comparison", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgtext).place(x=160, y=220)
+176 : Button(self.root, text="Select file", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.open_file("compare", [file1["text"], file2["text"]])).place(x=200, y=250)
+177 : if (evt != None and evt2 != None):
+178 : Button(self.root, text="Start File Comparing", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.search_lines(files_dir)).place(x=170, y=340)
+180 : def manifest(self, title=False):
+181 : self.root.update()
+183 : x = self.root.place_slaves()
+184 : for i in x:
+185 : i.place_forget()
+187 : if not title:
+188 : self.title.place(x=110, y=5)
+189 : else:
+190 : pass
+193 : def credits(self):
+194 : self.manifest()
+195 : self.back_button.place(x=5, y=5)
+197 : Label(self.root, text="Made by Conner Lovely", font=("Helvetica", 15, ("bold", "italic")), bg=self.mainbgtext).place(x=125, y=80)
+198 : Label(self.root, text="Link to Github", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=190, y=130)
+199 : label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue", cursor="hand2")
+200 : label.place(x=225, y=160)
+201 : label.bind("<Button-1>", lambda e: self.callback("https://github.com/MioDevelops"))
+202 : Label(self.root, text="Link to Replit", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=190, y=190)
+203 : label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue", cursor="hand2")
+204 : label.place(x=225, y=220)
+205 : label.bind("<Button-1>", lambda e: self.callback("https://replit.com/@MioYanaka"))
+206 : Label(self.root, text="Link to Twitter", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=190, y=260)
+207 : label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue", cursor="hand2")
+208 : label.place(x=225, y=290)
+209 : label.bind("<Button-1>", lambda e: self.callback("https://twitter.com/MioDevelops"))
+210 : Label(self.root, text="Have a question? Email me!", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=135, y=350)
+211 : label = Label(self.root, text="Here", font=("Helvetica", 10, ("bold", "italic", "underline")), bg=self.mainbgtext, fg="blue", cursor="hand2")
+212 : label.place(x=225, y=380)
+213 : label.bind("<Button-1>", lambda e: self.callback("mailto:MioDevelops@gmail.com"))
+215 : screen = Screen()
+217 : screen.main()
+219 : screen.root.mainloop()

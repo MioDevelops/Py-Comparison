@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import filedialog, messagebox
 import webbrowser
+import subprocess
+import os
 
 files = []
 files_dir = []
@@ -32,13 +34,6 @@ class Screen():
         self.extensions = ext
         messagebox.showinfo("Notification", 'You have successfully changed the file extensions to "{}", you may now close this window'.format(ext))
 
-    def change_language(self):
-        ans = messagebox.askyesno("Notification", "Changing language to spanish, are you sure? Cambiando idioma a español, estas seguro?")
-        if(ans):
-            pass
-            #do the thing of changing languages
-        pass
-
     def callback(self, url):
         answer = messagebox.askyesno("Redirect", "This link will open a new browser window, do you wish to continue?")
         if answer:
@@ -48,6 +43,17 @@ class Screen():
 
     def open_file(self, event, args):
         self.root.update()
+
+        if(event == "results"):
+            f = open("./results.txt", "w")
+            for i in range(0, len(args)):
+                if(args[i].split(": ")[1] == ""):
+                    pass
+                else:
+                    f.write(args[i] + "\n")
+            f.close()
+            subprocess.Popen(["notepad.exe", "results.txt"])
+            return
 
         if("None" not in args[0] and event == "initial" or "None" not in args[1] and event == "compare"):
             messagebox.showinfo("Notification", "You may not select another file, please refresh files if you wish to change it")
@@ -98,8 +104,6 @@ class Screen():
         label = Label(self.root, text="Settings", font=("Helvetica", 20, "bold"), bg=self.mainbgtext)
         label.place(x=185, y=80)
 
-        Button(self.root, text="Change language to spanish/Cambiar el idioma a español", font=("Helvetica", 9, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.change_language()).place(x=70, y=140)
-        
         if(self.extensions == ".py"):
             Button(self.root, text="Use all file extensions", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command= lambda : self.change_extension("All")).place(x=170, y=200)
         else:
@@ -141,15 +145,16 @@ class Screen():
                 else:
                     differences.append("%s : %s" % (line_index + 1, v))
 
-            for i in range(0, 20):
+            for i in range(0, 19):
                 if(differences[i].split(": ")[1] == ""):
                     pass
                 else:
                     print(differences[i].split(": ")[1])
                     if(len(differences[i]) > 50):
-                        differences[i] = differences[i][:-(len(differences[i]) - 3)] + "..."
+                        differences[i] = differences[i][:-(len(differences[i]) - 60) -3] + "..."
                     Label(self.root, text="Line " + differences[i], font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=5, y=self.last_label)
                     self.last_label += 20
+            Button(self.root, text="View all Results", font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.open_file("results", differences)).place(x=170, y=465)
 
         except PermissionError as e:
             messagebox.showerror("Error", "This program does not have the required permissions to open files, please run as administrator and try again")
