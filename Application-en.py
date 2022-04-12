@@ -18,6 +18,7 @@ class Screen():
         self.back_button = Button(self.root, text="Back", font=("Helvetica", 10, ("bold", "italic")), bg=self.mainbgbutton, command=lambda : self.main())
         self.back_button.place(x=5,y=5)
         self.extensions=".py"
+        self.last_label = 35
         self.root.update()
 
     def search_lines(self, files_dir):
@@ -123,20 +124,32 @@ class Screen():
 
             differences = []
             for i,v in enumerate(results1):
+                if(v.strip().replace(" ", "") == ""):                    
+                    pass
                 results1[i] = v.strip()
             
             for i,v in enumerate(results2):
+                if(v.strip().replace(" ", "") == ""):
+                    pass
                 results2[i] = v.strip()
 
             for line_index, v in enumerate(results1):
                 # check if index is in results1
                 if (line_index in range(len(results2))):
                     if(results1[line_index] != results2[line_index]):
-                        differences.append("%s : %s" % (line_index, v))
+                        differences.append("%s : %s" % (line_index + 1, v))
                 else:
-                    differences.append("%s : %s" % (line_index, v))
+                    differences.append("%s : %s" % (line_index + 1, v))
 
-            print(differences)
+            for i in range(0, 20):
+                if(differences[i].split(": ")[1] == ""):
+                    pass
+                else:
+                    print(differences[i].split(": ")[1])
+                    if(len(differences[i]) > 50):
+                        differences[i] = differences[i][:-(len(differences[i]) - 3)] + "..."
+                    Label(self.root, text="Line " + differences[i], font=("Helvetica", 12, ("bold", "italic")), bg=self.mainbgtext).place(x=5, y=self.last_label)
+                    self.last_label += 20
 
         except PermissionError as e:
             messagebox.showerror("Error", "This program does not have the required permissions to open files, please run as administrator and try again")
